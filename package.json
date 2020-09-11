@@ -1,0 +1,114 @@
+{
+  "name": "@typescript-eslint/typescript-eslint",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "contributors": [
+    "James Henry <typescript-eslint@jameshenry.blog>",
+    "Nicholas C. Zakas",
+    "Brad Zacher <brad.zacher@gmail.com>",
+    "armano2",
+    "Jed Fox"
+  ],
+  "license": "BSD-2-Clause",
+  "repository": "typescript-eslint/typescript-eslint",
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "check:clean-workspace-after-install": "git diff --quiet --exit-code",
+    "check:configs": "lerna run check:configs",
+    "check:docs": "lerna run check:docs",
+    "check:format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
+    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
+    "clean": "lerna clean && lerna run clean",
+    "cz": "git-cz",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
+    "generate:contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
+    "lerna:init": "lerna bootstrap --ignore-scripts && lerna link --force-local",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "lint:markdown:fix": "lint:markdown --fix",
+    "lint:markdown": "markdownlint '**/*.md' --config=.markdownlint.json --ignore-path=.markdownlintignore",
+    "lint": "eslint . --ext .js,.ts",
+    "postinstall": "yarn lerna:init && yarn build",
+    "pre-commit": "yarn lint-staged",
+    "pre-push": "yarn check:format",
+    "test": "lerna run test --concurrency 1",
+    "test:integration": "./tests/integration/run-all-tests.sh",
+    "test:kill-integration-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
+    "typecheck": "lerna run typecheck"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional",
+      "@commitlint/config-lerna-scopes"
+    ],
+    "rules": {
+      "body-max-length": [
+        0
+      ],
+      "body-max-line-length": [
+        0
+      ],
+      "footer-max-length": [
+        0
+      ],
+      "footer-max-line-length": [
+        0
+      ],
+      "header-max-length": [
+        0
+      ]
+    }
+  },
+  "engines": {
+    "node": "^10.12.0 || >=12.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@commitlint/config-lerna-scopes": "^9.1.2",
+    "@types/debug": "^4.1.5",
+    "@types/glob": "^7.1.3",
+    "@types/jest": "^26.0.10",
+    "@types/jest-specific-snapshot": "^0.5.4",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^14.6.2",
+    "@types/prettier": "^2.1.0",
+    "@types/rimraf": "^3.0.0",
+    "all-contributors-cli": "^6.17.2",
+    "cspell": "^4.1.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "downlevel-dts": "^0.6.0",
+    "eslint": "^7.7.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-eslint-plugin": "^2.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "glob": "^7.1.6",
+    "husky": "^4.2.5",
+    "isomorphic-fetch": "^2.2.1",
+    "jest": "^26.4.2",
+    "jest-specific-snapshot": "^4.0.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.2.13",
+    "make-dir": "^3.1.0",
+    "markdownlint-cli": "^0.23.2",
+    "prettier": "^2.1.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
+    "tslint": "^6.1.3",
+    "typescript": ">=3.3.1 <4.1.0"
+  },
+  "resolutions": {
+    "typescript": "4.0.2"
+  }
+}
