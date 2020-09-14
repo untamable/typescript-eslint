@@ -1,10 +1,36 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
+
+const isLogicalExpression = (
+  arg: TSESTree.Node,
+): arg is TSESTree.LogicalExpression =>
+  arg.type === AST_NODE_TYPES.LogicalExpression;
+const isLogicalAndExpression = (
+  arg: TSESTree.Node,
+): arg is TSESTree.LogicalExpression =>
+  isLogicalExpression(arg) && arg.operator === '&&';
+const isUnaryExpression = (
+  arg: TSESTree.Expression,
+): arg is TSESTree.UnaryExpression =>
+  arg.type === AST_NODE_TYPES.UnaryExpression;
+const isBinaryExpression = (
+  arg: TSESTree.Expression,
+): arg is TSESTree.BinaryExpression =>
+  arg.type === AST_NODE_TYPES.BinaryExpression;
+const isCallExpression = (arg: TSESTree.Node): arg is TSESTree.CallExpression =>
+  arg.type === AST_NODE_TYPES.CallExpression;
+const isIdentifier = (arg: TSESTree.Expression): arg is TSESTree.Identifier =>
+  arg.type === AST_NODE_TYPES.Identifier;
+const isBooleanCast = (arg: TSESTree.Node): boolean =>
+  isCallExpression(arg) &&
+  isIdentifier(arg.callee) &&
+  arg.callee.name === AST_TOKEN_TYPES.Boolean;
 
 export type Options = [
   {
@@ -16,7 +42,7 @@ export type Options = [
     allowNullableNumber?: boolean;
     allowAny?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-    jsxOnly?: boolean;
+    jsxConditionalsOnly?: boolean;
   },
 ];
 
@@ -57,7 +83,7 @@ export default util.createRule<Options, MessageId>({
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
-          jsxOnly: { type: 'boolean' },
+          jsxConditionalsOnly: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -107,7 +133,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableNumber: false,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      jsxOnly: false,
+      jsxConditionalsOnly: false,
     },
   ],
   create(context, [options]) {
@@ -134,7 +160,7 @@ export default util.createRule<Options, MessageId>({
 
     const checkedNodes = new Set<TSESTree.Node>();
 
-    if (options.jsxOnly) {
+    if (options.jsxConditionalsOnly) {
       return {
         JSXExpressionContainer: checkJsxExpression,
       };
@@ -169,7 +195,17 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkJsxExpression(node: TSESTree.JSXExpressionContainer): void {
-      checkNode(node.expression);
+      if (isLogicalAndExpression(node.expression)) {
+        if (
+          isUnaryExpression(node.expression) ||
+          isBinaryExpression(node.expression) ||
+          isBooleanCast(node.expression)
+        ) {
+          return;
+        }
+        checkNode(node.expression);
+      }
+      return;
     }
 
     /**

@@ -140,7 +140,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -151,7 +151,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -162,7 +162,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -173,7 +173,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -184,7 +184,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -195,7 +195,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -206,7 +206,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -217,7 +217,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -228,7 +228,7 @@ if (x) {
         };
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     // should still allow falsy and truthy conditions in non JSX context
@@ -238,7 +238,7 @@ if (x) {
         check && {}
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
@@ -247,7 +247,7 @@ if (x) {
         !check && {}
       `,
       filename: path.join(rootPath, 'react.tsx'),
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   ],
@@ -477,7 +477,7 @@ if (x) {
           return <div>{check && <p>Check</p>}</div>
         };
       `,
-      options: [{ jsxOnly: true, allowString: false }],
+      options: [{ jsxConditionalsOnly: true, allowString: false }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       filename: path.join(rootPath, 'react.tsx'),
       errors: [{ messageId: 'conditionErrorString', line: 4, column: 24 }],
@@ -490,7 +490,7 @@ if (x) {
         };
       `,
       errors: [{ messageId: 'conditionErrorObject', line: 4, column: 24 }],
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       filename: path.join(rootPath, 'react.tsx'),
     },
@@ -502,7 +502,7 @@ if (x) {
         };
       `,
       errors: [{ messageId: 'conditionErrorObject', line: 4, column: 24 }],
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       filename: path.join(rootPath, 'react.tsx'),
     },
@@ -513,7 +513,7 @@ if (x) {
           return <div>{check && <p>Check</p>}</div>
         };
       `,
-      options: [{ jsxOnly: true, allowNumber: false }],
+      options: [{ jsxConditionalsOnly: true, allowNumber: false }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       errors: [{ messageId: 'conditionErrorNumber', line: 4, column: 24 }],
       filename: path.join(rootPath, 'react.tsx'),
@@ -525,7 +525,7 @@ if (x) {
           return <div>{check && <p>Check</p>}</div>
         };
       `,
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       errors: [{ messageId: 'conditionErrorAny', line: 4, column: 24 }],
       filename: path.join(rootPath, 'react.tsx'),
@@ -537,7 +537,7 @@ if (x) {
           return <div>{check && <p>Check</p>}</div>
         };
       `,
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       errors: [{ messageId: 'conditionErrorNullish', line: 4, column: 24 }],
       filename: path.join(rootPath, 'react.tsx'),
@@ -549,7 +549,7 @@ if (x) {
           return <div>{check && <p>Check</p>}</div>
         };
       `,
-      options: [{ jsxOnly: true }],
+      options: [{ jsxConditionalsOnly: true }],
       parserOptions: { ecmaFeatures: { jsx: true } },
       errors: [{ messageId: 'conditionErrorNullish', line: 4, column: 24 }],
       filename: path.join(rootPath, 'react.tsx'),
