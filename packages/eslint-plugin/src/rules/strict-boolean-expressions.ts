@@ -16,6 +16,7 @@ export type Options = [
     allowNullableNumber?: boolean;
     allowAny?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    jsxOnly?: boolean;
   },
 ];
 
@@ -56,6 +57,7 @@ export default util.createRule<Options, MessageId>({
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
+          jsxOnly: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -105,6 +107,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableNumber: false,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      jsxOnly: false,
     },
   ],
   create(context, [options]) {
@@ -130,6 +133,12 @@ export default util.createRule<Options, MessageId>({
     }
 
     const checkedNodes = new Set<TSESTree.Node>();
+
+    if (options.jsxOnly) {
+      return {
+        JSXExpressionContainer: checkJsxExpression,
+      };
+    }
 
     return {
       ConditionalExpression: checkTestExpression,
@@ -157,6 +166,10 @@ export default util.createRule<Options, MessageId>({
 
     function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
       checkNode(node.argument, true);
+    }
+
+    function checkJsxExpression(node: TSESTree.JSXExpressionContainer): void {
+      checkNode(node.expression);
     }
 
     /**

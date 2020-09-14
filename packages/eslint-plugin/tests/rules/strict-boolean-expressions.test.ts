@@ -133,6 +133,123 @@ if (x) {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
     },
+    {
+      code: noFormat`
+        const Component = () => {
+          return <div>{true && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = true;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = false;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = '';
+          return <div>{!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = '';
+          return <div>{!!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = 0;
+          return <div>{!!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check;
+          return <div>{!!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = null;
+          return <div>{!!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = undefined;
+          return <div>{!!check && <p>Check</p>}</div>
+        };
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    // should still allow falsy and truthy conditions in non JSX context
+    {
+      code: noFormat`
+        const check = '';
+        check && {}
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    {
+      code: noFormat`
+        const check = '';
+        !check && {}
+      `,
+      filename: path.join(rootPath, 'react.tsx'),
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
   ],
 
   invalid: [
@@ -352,6 +469,90 @@ if (x) {
       parserOptions: {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = '';
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      options: [{ jsxOnly: true, allowString: false }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      filename: path.join(rootPath, 'react.tsx'),
+      errors: [{ messageId: 'conditionErrorString', line: 4, column: 24 }],
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = [];
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      errors: [{ messageId: 'conditionErrorObject', line: 4, column: 24 }],
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      filename: path.join(rootPath, 'react.tsx'),
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = {};
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      errors: [{ messageId: 'conditionErrorObject', line: 4, column: 24 }],
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      filename: path.join(rootPath, 'react.tsx'),
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = 0;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      options: [{ jsxOnly: true, allowNumber: false }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      errors: [{ messageId: 'conditionErrorNumber', line: 4, column: 24 }],
+      filename: path.join(rootPath, 'react.tsx'),
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      errors: [{ messageId: 'conditionErrorAny', line: 4, column: 24 }],
+      filename: path.join(rootPath, 'react.tsx'),
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = null;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      errors: [{ messageId: 'conditionErrorNullish', line: 4, column: 24 }],
+      filename: path.join(rootPath, 'react.tsx'),
+    },
+    {
+      code: noFormat`
+        const Component = () => {
+          const check = undefined;
+          return <div>{check && <p>Check</p>}</div>
+        };
+      `,
+      options: [{ jsxOnly: true }],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      errors: [{ messageId: 'conditionErrorNullish', line: 4, column: 24 }],
+      filename: path.join(rootPath, 'react.tsx'),
     },
   ],
 });
