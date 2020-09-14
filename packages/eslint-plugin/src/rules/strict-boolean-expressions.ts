@@ -197,9 +197,9 @@ export default util.createRule<Options, MessageId>({
     function checkJsxExpression(node: TSESTree.JSXExpressionContainer): void {
       if (isLogicalAndExpression(node.expression)) {
         if (
-          isUnaryExpression(node.expression) ||
-          isBinaryExpression(node.expression) ||
-          isBooleanCast(node.expression)
+          isUnaryExpression(node.expression.left) ||
+          isBinaryExpression(node.expression.left) ||
+          isBooleanCast(node.expression.left)
         ) {
           return;
         }
